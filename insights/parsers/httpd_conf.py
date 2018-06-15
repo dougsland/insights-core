@@ -85,8 +85,7 @@ ParsedData = namedtuple('ParsedData', ['value', 'line', 'section', 'section_name
 """namedtuple: Type for storing the parsed httpd configuration's directive information."""
 
 
-@parser(Specs.httpd_conf)
-class HttpdConf(LegacyItemAccess, Parser):
+class HttpdConfBase(LegacyItemAccess, Parser):
     """
     Get the key value pairs separated on the first space, ignoring leading
     and trailing spaces.
@@ -112,7 +111,7 @@ class HttpdConf(LegacyItemAccess, Parser):
         self.data = {}
         self.first_half = {}
         self.second_half = {}
-        super(HttpdConf, self).__init__(*args, **kwargs)
+        super(HttpdConfBase, self).__init__(*args, **kwargs)
 
     def parse_content(self, content):
         def add_to_dict_list(dictionary, key, element):
@@ -186,25 +185,37 @@ class HttpdConf(LegacyItemAccess, Parser):
                         add_to_dict_list(where_to_store, option, parsed_data)
 
 
+@parser(Specs.httpd_conf)
+class HttpdConf(HttpdConfBase):
+    """
+    Parse the keyword-and-value-but-also-vaguely-XML of an Apache configuration
+    file.
+
+    See the :py:class:`insights.parsers.httpd_conf.HttpdConfBase` base
+    class for additional information.
+    """
+    pass
+
+
 @parser(Specs.httpd_conf_scl_httpd24)
-class HttpdConfSclHttpd24(HttpdConf):
+class HttpdConfSclHttpd24(HttpdConfBase):
     """
     Parse the keyword-and-value-but-also-vaguely-XML of an Apache configuration
     file located in path /opt/rh/httpd24/root/etc/httpd.
 
-    See the :py:class:`insights.parsers.httpd_conf.HttpdConf` base
+    See the :py:class:`insights.parsers.httpd_conf.HttpdConfBase` base
     class for additional information.
     """
     pass
 
 
 @parser(Specs.httpd_conf_scl_jbcs_httpd24)
-class HttpdConfSclJbcsHttpd24(HttpdConf):
+class HttpdConfSclJbcsHttpd24(HttpdConfBase):
     """
     Parse the keyword-and-value-but-also-vaguely-XML of an Apache configuration
     file located in path /opt/rh/jbcs-httpd24/root/etc/httpd.
 
-    See the :py:class:`insights.parsers.httpd_conf.HttpdConf` base
+    See the :py:class:`insights.parsers.httpd_conf.HttpdConfBase` base
     class for additional information.
     """
     pass
