@@ -69,8 +69,7 @@ from insights.parsers.httpd_conf import HttpdConf, dict_deep_merge, ParsedData
 from insights.parsers.httpd_conf import HttpdConfSclHttpd24, HttpdConfSclJbcsHttpd24
 
 
-@combiner(HttpdConf)
-class HttpdConfAll(object):
+class HttpdConfAllBase(object):
     """
     A combiner for parsing all httpd configurations. It parses all sources and makes a composition
     to store actual loaded values of the settings as well as information about parsed configuration
@@ -304,25 +303,37 @@ class HttpdConfAll(object):
         return []
 
 
+@combiner(HttpdConf)
+class HttpdConfAll(HttpdConfAllBase):
+    """
+    A combiner for parsing all httpd configurations. It parses files
+    located in path /etc/httpd.
+
+    See the :py:class:`insights.combiners.httpd_conf.HttpdConfAllBase` base
+    class for additional information.
+    """
+    pass
+
+
 @combiner(HttpdConfSclHttpd24)
-class HttpdConfSclHttpd24(HttpdConfAll):
+class HttpdConfSclHttpd24(HttpdConfAllBase):
     """
     A combiner for parsing all httpd configurations. It parses files
     located in path /opt/rh/httpd24/root/etc/httpd.
 
-    See the :py:class:`insights.combiners.httpd_conf.HttpdConfAll` base
+    See the :py:class:`insights.combiners.httpd_conf.HttpdConfAllBase` base
     class for additional information.
     """
     pass
 
 
 @combiner(HttpdConfSclJbcsHttpd24)
-class HttpdConfSclJbcsHttpd24(HttpdConfAll):
+class HttpdConfSclJbcsHttpd24(HttpdConfAllBase):
     """
     A combiner for parsing all httpd configurations. It parses files
     located in path /opt/rh/jbcs-httpd24/root/etc/httpd.
 
-    See the :py:class:`insights.combiners.httpd_conf.HttpdConfAll` base
+    See the :py:class:`insights.combiners.httpd_conf.HttpdConfAllBase` base
     class for additional information.
     """
     pass
