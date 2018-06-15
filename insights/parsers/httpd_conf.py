@@ -186,6 +186,30 @@ class HttpdConf(LegacyItemAccess, Parser):
                         add_to_dict_list(where_to_store, option, parsed_data)
 
 
+@parser(Specs.httpd_conf_scl_httpd24)
+class HttpdConfSclHttpd24(HttpdConf):
+    """
+    Parse the keyword-and-value-but-also-vaguely-XML of an Apache configuration
+    file located in path /opt/rh/httpd24/root/etc/httpd.
+
+    See the :py:class:`insights.parsers.httpd_conf.HttpdConf` base
+    class for additional information.
+    """
+    pass
+
+
+@parser(Specs.httpd_conf_scl_jbcs_httpd24)
+class HttpdConfSclJbcsHttpd24(HttpdConf):
+    """
+    Parse the keyword-and-value-but-also-vaguely-XML of an Apache configuration
+    file located in path /opt/rh/jbcs-httpd24/root/etc/httpd.
+
+    See the :py:class:`insights.parsers.httpd_conf.HttpdConf` base
+    class for additional information.
+    """
+    pass
+
+
 def dict_deep_merge(tgt, src):
     """
     Utility function to merge the source dictionary `src` to the target
